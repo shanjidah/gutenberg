@@ -99,10 +99,18 @@ function gutenberg_generate_block_templates_export_file() {
 	// Load theme.json into the zip file.
 	$tree = WP_Theme_JSON_Resolver_Gutenberg::get_theme_data();
 	$tree->merge( WP_Theme_JSON_Resolver_Gutenberg::get_user_data() );
+	$theme_json_raw = $tree->get_data();
+	// If a version is defined, add a schema.
+	if ( $theme_json_raw['version'] && in_array( $theme_json_raw['version'], array( "1", "2" ) ) ) {
+		// Put $schema at the start of the array.
+		$theme_json_raw = array_reverse( $theme_json_raw );
+		$theme_json_raw['$schema'] = "https://json.schemastore.org/theme-v1.json";
+		$theme_json_raw = array_reverse( $theme_json_raw );
+	}
 
 	$zip->addFromString(
 		'theme.json',
-		wp_json_encode( $tree->get_data(), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE )
+		wp_json_encode( $theme_json_raw, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE )
 	);
 
 	// Save changes to the zip file.
