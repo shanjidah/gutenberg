@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Enhancements
+
+-   `ToggleGroupControlOption`: Add `icon` support ([#39760](https://github.com/WordPress/gutenberg/pull/39760)).
+
 ### Internal
 
 -   `BaseControl`: Convert to TypeScript ([#39468](https://github.com/WordPress/gutenberg/pull/39468)).
